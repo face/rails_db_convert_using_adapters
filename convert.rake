@@ -20,6 +20,9 @@
 # For further instructions see 
 #    http://myutil.com/2008/8/31/rake-task-transfer-rails-database-mysql-to-postgres
 #
+# The master repository for this script is at github:
+#    http://github.com/face/rails_db_convert_using_adapters/tree/master
+#
 # Author: Rama McIntosh
 #         Matson Systems, Inc.
 #         http://www.matsonsystems.com
