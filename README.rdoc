@@ -1,0 +1,26 @@
+= convert.rake
+
+Rake task to convert and transfer a Rails database from one database
+platform to another using two open db adapters.  For example, 
+from Postgres to MySQL, or the reverse.
+
+The task deletes all data in the development database and then
+transfers the data from the production database into the development
+database.
+
+== Features
+* Nice to RAM on large data sets
+* Works with blobs
+
+== Assumptions
+* No writes are happening to either database for the duration of this task. 
+* Both schemas are identical (i.e. migrations are at the same VERSION)
+* The development data can be removed and replaced.
+
+
+== Usage
+For a detailed example please see: http://myutil.com/2008/8/31/rake-task-transfer-rails-database-mysql-to-postgres
+
+Place convert.rake in your lib/tasks directory.
+
+       rake db:convert:prod2dev
