@@ -79,8 +79,14 @@ namespace :db do
       ActiveRecord::Base.establish_connection(:production)
       (ActiveRecord::Base.connection.tables - skip_tables).each do |table_name|
 
-        ProductionModelClass.set_table_name(table_name)
-        DevelopmentModelClass.set_table_name(table_name)
+        if Rails::VERSION::MAJOR == 4 
+          ProductionModelClass.table_name = table_name
+          DevelopmentModelClass.table_name = table_name
+        else
+          ProductionModelClass.set_table_name(table_name)
+          DevelopmentModelClass.set_table_name(table_name)
+        end
+        
         DevelopmentModelClass.establish_connection(:development)
         DevelopmentModelClass.reset_column_information
         ProductionModelClass.reset_column_information
@@ -102,8 +108,14 @@ namespace :db do
             models.each do |model|
               new_model = DevelopmentModelClass.new(model.attributes)
               new_model.id = model.id
-              new_model.save(false)
+              if Rails::VERSION::MAJOR == 4 
+                new_model.save(:validate => false)
+              else
+                new_model.save(false)
+              end
             end
+
+            DevelopmentModelClass.connection.execute("SELECT setval('#{table_name}_id_seq', (SELECT MAX(id) FROM #{table_name})+1); ")
           end
         end
         print "#{count} records converted\n"
