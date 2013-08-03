@@ -114,6 +114,8 @@ namespace :db do
                 new_model.save(false)
               end
             end
+
+            DevelopmentModelClass.connection.execute("SELECT setval('#{table_name}_id_seq', (SELECT MAX(id) FROM #{table_name})+1); ")
           end
         end
         print "#{count} records converted\n"
